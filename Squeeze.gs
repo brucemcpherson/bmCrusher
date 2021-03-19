@@ -270,7 +270,8 @@ var Squeeze = (function (ns) {
         chunks: crushed && crushed.chunks ? crushed.chunks: null,
         data: data,
         digest:crushed ? crushed.digest : "",
-        skipZip: crushed && crushed.skipZip
+        skipZip: crushed && crushed.skipZip,
+        expiresAt: crushed && crushed.expiresAt
       }
       
     };
@@ -385,13 +386,24 @@ var Squeeze = (function (ns) {
     */
     self.getBigProperty = function (propKey) {
       
-      // in case the key is an object
+      // in case the key is an objecs
       propKey = fudgeKey_(propKey);
       
       // always big properties are always crushed
       var chunky = self.getChunkKeys ( prefix_ + propKey);
-      
+      const expired = chunky && chunky.expiresAt && chunky.expiresAt < new Date().getTime()
+    
       // that'll return either some data, or a list of keys
+      if (expired) {
+        // auto cleaning - it;s possible it'll fail if it cleans between checking and here and the store supports self cleansing
+        // so we dont care if there's an error
+        try {
+          self.removeBigProperty(propKey)
+        } catch (err) {
+          console.log('ignored an error self cleaning  for', propKey, err)
+        }
+        return null
+      }
       if (chunky && chunky.chunks) {
         var p = chunky.chunks.reduce (function (p,c) {
           var r = getObject_ ( self.getStore() , c);
@@ -461,7 +473,7 @@ var Squeeze = (function (ns) {
       
       // now split up the big thing if needed
       // expire should be a little bigger for the chunks to make sure they dont go away
-      
+      const  expiresAt = expire ? new Date().getTime() + expire *1000 : null
       do {
         
         // peel off a piece
@@ -484,7 +496,8 @@ var Squeeze = (function (ns) {
           size += setObject_ (self.getStore(), propKey , {
             chunk:chunk,
             digest:digest,
-            skipZip:skipZip
+            skipZip:skipZip,
+            expiresAt
           },expire);
         }
         
@@ -495,7 +508,8 @@ var Squeeze = (function (ns) {
         size += setObject_ (self.getStore(), propKey,{
           chunks:chunks,
           digest:digest,
-          skipZip: skipZip
+          skipZip: skipZip,
+          expiresAt
         },expire );
       }
       
