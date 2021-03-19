@@ -33,6 +33,8 @@ function CrusherPluginDriveService () {
    */
   self.init = function (settings) {
     settings_ = settings || {};
+    // make sure we end with a single slash
+    settings_.prefix = ((settings_.prefix || '') + '/').replace(/\/+$/,'/')
     
     // set default chunkzise for cacheservice (5mb)
     settings_.chunkSize = settings_.chunkSize || 5000000;
