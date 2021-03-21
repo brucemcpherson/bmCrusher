@@ -1,5 +1,5 @@
 # Google Apps Script Project: bmCrusher
-This repo (bmCrusher) was automatically updated on 3/20/2021, 4:02:19 PM by GasGit
+This repo (bmCrusher) was automatically updated on 3/21/2021, 3:02:46 PM by GasGit
 
 For more information on gasgit, see the [desktop liberation site](https://ramblings.mcpher.com/drive-sdk-and-github/migrategasgit/ "desktop liberation")
 
@@ -20,6 +20,7 @@ Crusher| server_js
 Squeeze| server_js
 Utils| server_js
 DriveUtils| server_js
+Fetcher| server_js
 ### Directly referenced libraries
 no libraries discovered
 ### All dependencies and sub dependencies
