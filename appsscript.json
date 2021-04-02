@@ -1,6 +1,12 @@
 {
   "timeZone": "Europe/London",
-  "dependencies": {},
+  "dependencies": {
+    "libraries": [{
+      "userSymbol": "bmUpstash",
+      "libraryId": "1GBZYWotLe5-pVord4fe5DCl6pwGz1BiDjAqA0AE812_qy6XTWmWeZNX-",
+      "version": "5"
+    }]
+  },
   "exceptionLogging": "STACKDRIVER",
   "runtimeVersion": "V8"
 }
