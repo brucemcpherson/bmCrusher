@@ -1,0 +1,15 @@
+{
+  "timeZone": "America/New_York",
+  "dependencies": {
+    "libraries": [
+      {
+        "userSymbol": "bmCrusher",
+        "version": "6",
+        "libraryId": "1nbx8f-kt1rw53qbwn4SO2nKaw9hLYl5OI3xeBgkBC7bpEdWKIPBDkVG0",
+        "developmentMode": false
+      }
+    ]
+  },
+  "exceptionLogging": "STACKDRIVER",
+  "runtimeVersion": "V8"
+}
