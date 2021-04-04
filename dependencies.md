@@ -1,5 +1,5 @@
 # Google Apps Script Project: bmCrusher
-This repo (bmCrusher) was automatically updated on 4/2/2021, 12:11:37 PM by GasGit
+This repo (bmCrusher) was automatically updated on 4/4/2021, 11:06:11 AM by GasGit
 
 For more information on gasgit, see the [desktop liberation site](https://ramblings.mcpher.com/drive-sdk-and-github/migrategasgit/ "desktop liberation")
 
@@ -16,20 +16,29 @@ The shared link for [bmCrusher is here](https://script.google.com/d/1nbx8f-kt1rw
 *name*|*type*
 --- | --- 
 appsscript| json
-Crusher| server_js
 Squeeze| server_js
 Utils| server_js
 DriveUtils| server_js
 Fetcher| server_js
+Compress| server_js
+LZString| server_js
+CrusherPluginDriveService| server_js
+CrusherPluginCacheService| server_js
+CrusherPluginUpstashService| server_js
+CrusherPluginGitService| server_js
+CrusherPluginOneDriveService| server_js
+CrusherPluginGcsService| server_js
 ### Directly referenced libraries
 *library*|*identifier*|*key*|*version*|*dev mode*|*source*|
 --- | --- | --- | --- | --- | --- 
-bmUpstash| bmUpstash|1GBZYWotLe5-pVord4fe5DCl6pwGz1BiDjAqA0AE812_qy6XTWmWeZNX-|5|no|[here](libraries/bmUpstash "library source")
+cGcsStore| cGcsStore|1w0dgijlIMA_o5p63ajzcaa_LJeUMYnrrSgfOzLKHesKZJqDCzw36qorl|8|no|[here](libraries/cGcsStore "library source")
+bmUpstash| bmUpstash|1GBZYWotLe5-pVord4fe5DCl6pwGz1BiDjAqA0AE812_qy6XTWmWeZNX-|6|no|[here](libraries/bmUpstash "library source")
 ### All dependencies and sub dependencies
 *library*|*identifier*|*key*|*version*|*dev mode*|*source*|
 --- | --- | --- | --- | --- | --- 
-bmUpstash| bmUpstash|1GBZYWotLe5-pVord4fe5DCl6pwGz1BiDjAqA0AE812_qy6XTWmWeZNX-|5|no|[here](libraries/bmUpstash "library source")
-bmCrusher| bmCrusher|1nbx8f-kt1rw53qbwn4SO2nKaw9hLYl5OI3xeBgkBC7bpEdWKIPBDkVG0|6|no|[here](libraries/bmCrusher "library source")
+cGcsStore| cGcsStore|1w0dgijlIMA_o5p63ajzcaa_LJeUMYnrrSgfOzLKHesKZJqDCzw36qorl|8|no|[here](libraries/cGcsStore "library source")
+cUseful| cUseful|1EbLSESpiGkI3PYmJqWh3-rmLkYKAtCNPi1L2YCtMgo2Ut8xMThfJ41Ex|129|no|[here](libraries/cUseful "library source")
+bmUpstash| bmUpstash|1GBZYWotLe5-pVord4fe5DCl6pwGz1BiDjAqA0AE812_qy6XTWmWeZNX-|6|no|[here](libraries/bmUpstash "library source")
 ### Enabled Google Services
 no libraries discovered
 ### Scopes required
