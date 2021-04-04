@@ -144,7 +144,6 @@ class Gql {
 function gqlRedis({ fetcher, tokenService, url = 'https://graphql-eu-west-1.upstash.io/' } = {}) {
   if (!fetcher) throw new Error(`Must specify a fetcher - for apps script it should probably be ${'U'}rlfetch.fetch`)
   if (!tokenService) throw new Error(`Must specify a tokenservice function - should return your upstash read or read/write access key eg () => rwkey`)
-  // initialize the fetcher - we'll just steal the one from bmcrusher
   const f = new Fetcher({ fetcher, tokenService }).got
   return new Gql({ fetcher: f, url })
 }
