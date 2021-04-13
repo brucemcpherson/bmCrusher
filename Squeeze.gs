@@ -547,6 +547,7 @@ var Squeeze = (function (ns) {
     * @return {string} the b64 zipped version
     */
     self.zip = function (crushThis, uselz) {
+      //console.log(crushThis)
       if (!uselz) {
         return Utilities.base64Encode(Utilities.zip([Utilities.newBlob(crushThis)]).getBytes());
       } else {
