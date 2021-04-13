@@ -285,10 +285,12 @@ var Utils = (function (ns) {
   ns.keyDigest = function () {
     
     // conver args to an array and digest them
-    return  Utilities.base64EncodeWebSafe (
-      Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_1,Array.prototype.slice.call(arguments).map(function (d) {
+    const t = Array.prototype.slice.call(arguments).map(function (d) {
         return (Object(d) === d) ? JSON.stringify(d) : d.toString();
-      }).join("-"),Utilities.Charset.UTF_8));
+      }).join("-")
+    const s = Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_1,t,Utilities.Charset.UTF_8)
+    return  Utilities.base64EncodeWebSafe (s)
+      
   };
   
   
