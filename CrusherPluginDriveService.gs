@@ -42,10 +42,11 @@ function CrusherPluginDriveService() {
 
     // must have a cache service and a chunksize, and the store must be valid
     checkStore();
+    self.store = folder_
 
     // now initialize the squeezer
     self.squeezer = new Squeeze.Chunking()
-      .setStore(folder_)  // note that the store becomes the folder at this stage
+      .setStore(self.store)  // note that the store becomes the folder at this stage
       .setChunkSize(_settings.chunkSize)
       .funcWriteToStore(write)
       .funcReadFromStore(read)
@@ -53,12 +54,18 @@ function CrusherPluginDriveService() {
       .setRespectDigest(_settings.respectDigest)
       .setCompressMin(_settings.compressMin)
       .setUselz(_settings.uselz || false)
-      .setPrefix(_settings.prefix);
-
+      .setPrefix('');
+    ''
     // export the verbs
+
     self.put = self.squeezer.setBigProperty;
     self.get = self.squeezer.getBigProperty;
     self.remove = self.squeezer.removeBigProperty;
+    self.native = {
+      get: nativeRead,
+      put: nativeWrite,
+      remove: nativeRemove
+    }
     return self;
 
   };
@@ -73,38 +80,15 @@ function CrusherPluginDriveService() {
     return fs.hasNext() ? fs.next() : null;
   }
 
-  /**
-   * remove an item
-   * @param {string} key the key to remove
-   * @return {object} whatever you  like
-   */
-  function remove(store, key) {
-    checkStore();
-    return Utils.expBackoff(function () {
-      const f = getTheFile(store, key);
-      return f ? store.removeFile(f) : null;
-    });
-  }
 
   /**
    * write an item
    * @param {object} store whatever you initialized store with
    * @param {string} key the key to write
    * @param {string} str the string to write
-   * @param {number} expiry time in secs .. ignored in drive
    * @return {object} whatever you like
    */
-  function write(store, key, str, expiry) {
-    checkStore();
-    return Utils.expBackoff(function () {
-      // Drive doesnt support auto expiry
-      // this could be improved with a prune method - but for another day
-      // if it's an existing file, overwrite, otherwise create
-      var f = getTheFile(store, key);
-      return f ? f.setContent(str) : store.createFile(key, str);
-    });
-
-  }
+  const write = (store, key, str) => nativeWrite({ key, value: str, mimeType: "application/json", store })
 
   /**
    * read an item
@@ -112,14 +96,120 @@ function CrusherPluginDriveService() {
    * @param {string} key the key to write
    * @return {object} whatever you like
    */
-  function read(store, key) {
-    checkStore();
-    return Utils.expBackoff(function () {
-      var f = getTheFile(store, key);
-      return f ? f.getBlob().getDataAsString() : null;
-    });
+  const read = (store, key) => {
+    const f = nativeRead({ key, store })
+    return f ? f.text : null;
+  }
+  /**
+   * remove an item
+   * @param {string} key the key to remove
+   * @return {object} whatever you  like
+   */
+  const remove = (store, key) => nativeRemove({ key, store })
+
+
+  const nativeRemove = ({ key, store }) => {
+    checkStore()
+    // the store will almost certainly be the store from the instance
+    store = store || self.store
+    const method = 'nativeRemove'
+
+    try {
+      return Utils.expBackoff(function () {
+        const f = getTheFile(store, key);
+        const r = f && store.removeFile(f)
+        return {
+          code: f? 204 : 404,
+          method,
+          key
+        }
+        
+      });
+    } catch (error) {
+      return {
+        error,
+        key,
+        method
+      }
+    }
+  }
+  /**
+   * native read
+   */
+  const nativeRead = ({ key, store }) => {
+    checkStore()
+    // the store will almost certainly be the store from the instance
+    store = store || self.store
+    const method = 'nativeRead'
+    try {
+      return Utils.expBackoff(() => {
+        const f = getTheFile(store, key);
+        const blob = f && f.getBlob()
+        const text = blob && blob.getDataAsString()
+        const mimeType = f && f.getMimeType()
+        const bytes = blob && blob.getBytes()
+        return {
+          text,
+          bytes,
+          key,
+          mimeType,
+          code: f ? 200 : 404,
+          method
+        }
+      })
+    } catch (error) {
+      return {
+        error,
+        key,
+        method
+      }
+    }
   }
 
+  /**
+   * native write
+   */
+  const nativeWrite = ({ key, value, mimeType, store }) => {
+
+    checkStore()
+    // the store will almost certainly be the store from the instance
+    store = store || self.store
+    method = 'nativeWrite'
+    if (!key) throw new Error('supply key as filename')
+    try {
+      return Utils.expBackoff(() => {
 
 
+        // make a blob to write
+        let blob = value
+
+        if (Utils.isBlob(value)) {
+          mimeType = mimeType || value.getContentType() || 'text/plain'
+
+        } else {
+          blob = Utilities.newBlob(value)
+        }
+        blob.setContentType(mimeType)
+        blob.setName(key)
+
+        // if it exists, then we should remove it
+        nativeRemove ({ key, store })
+
+        const file = store.createFile(blob);
+        return {
+          key,
+          file,
+          mimeType,
+          code: 200,
+          method
+        }
+      })
+    } catch (error) {
+      return {
+        error,
+        key,
+        method
+      }
+    }
+  }
 }
