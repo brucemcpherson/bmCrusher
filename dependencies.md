@@ -1,5 +1,5 @@
 # Google Apps Script Project: bmCrusher
-This repo (bmCrusher) was automatically updated on 4/13/2021, 12:22:36 PM by GasGit
+This repo (bmCrusher) was automatically updated on 5/24/2021, 12:13:08 PM by GasGit
 
 For more information on gasgit, see the [desktop liberation site](https://ramblings.mcpher.com/drive-sdk-and-github/migrategasgit/ "desktop liberation")
 
@@ -32,14 +32,14 @@ CrusherPluginPropertyService| server_js
 ### Directly referenced libraries
 *library*|*identifier*|*key*|*version*|*dev mode*|*source*|
 --- | --- | --- | --- | --- | --- 
-cGcsStore| cGcsStore|1w0dgijlIMA_o5p63ajzcaa_LJeUMYnrrSgfOzLKHesKZJqDCzw36qorl|8|no|[here](libraries/cGcsStore "library source")
 bmUpstash| bmUpstash|1GBZYWotLe5-pVord4fe5DCl6pwGz1BiDjAqA0AE812_qy6XTWmWeZNX-|6|no|[here](libraries/bmUpstash "library source")
+cGcsStore| cGcsStore|1w0dgijlIMA_o5p63ajzcaa_LJeUMYnrrSgfOzLKHesKZJqDCzw36qorl|10|no|[here](libraries/cGcsStore "library source")
 ### All dependencies and sub dependencies
 *library*|*identifier*|*key*|*version*|*dev mode*|*source*|
 --- | --- | --- | --- | --- | --- 
-cGcsStore| cGcsStore|1w0dgijlIMA_o5p63ajzcaa_LJeUMYnrrSgfOzLKHesKZJqDCzw36qorl|8|no|[here](libraries/cGcsStore "library source")
-cUseful| cUseful|1EbLSESpiGkI3PYmJqWh3-rmLkYKAtCNPi1L2YCtMgo2Ut8xMThfJ41Ex|129|no|[here](libraries/cUseful "library source")
 bmUpstash| bmUpstash|1GBZYWotLe5-pVord4fe5DCl6pwGz1BiDjAqA0AE812_qy6XTWmWeZNX-|6|no|[here](libraries/bmUpstash "library source")
+cGcsStore| cGcsStore|1w0dgijlIMA_o5p63ajzcaa_LJeUMYnrrSgfOzLKHesKZJqDCzw36qorl|10|no|[here](libraries/cGcsStore "library source")
+cUseful| cUseful|1EbLSESpiGkI3PYmJqWh3-rmLkYKAtCNPi1L2YCtMgo2Ut8xMThfJ41Ex|129|no|[here](libraries/cUseful "library source")
 ### Enabled Google Services
 no libraries discovered
 ### Scopes required
