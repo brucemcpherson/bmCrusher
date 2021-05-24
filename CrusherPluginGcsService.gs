@@ -25,11 +25,11 @@ function CrusherPluginGcsService() {
 
     _settings = settings || {};
     // set default chunkzise for gcs
-    _settings.chunkSize = _settings.chunkSize || 5000000;
+    _settings.chunkSize = _settings.chunkSize || 10 * 1024 * 1024;
 
     // respect digest can reduce the number of chunks read, but may return stale
     _settings.respectDigest = Utils.isUndefined(_settings.respectDigest) ? false : _settings.respectDigest;
-    
+
 
     //set up a store that uses google cloud storage - we can reuse the regular cache servive crusher for this
     _settings.store = new cGcsStore.GcsStore()
@@ -45,9 +45,12 @@ function CrusherPluginGcsService() {
       // need to cldean up the prefix too to normalize in case folder definitions are being used
       .setFolderKey(_settings.prefix.replace(/^\/+/, ''))
       // no need to compress as crusher will take care of that - no point in zipping again
-      .setDefaultCompress(false);
+      .setDefaultCompress(false)
+      .setMaxPostSize(_settings.chunkSize)
 
-    checkStore();
+    self.store = _settings.store;
+
+
     // you can set a default expiry time in seconds, but since we're allowing crusher to manage expiry, we don't want expiry to do it too
     // however we do want it to self clean, so we can use lifecycle management
     // (it's actually a number of days) - so just set it to the day it expires
@@ -55,13 +58,53 @@ function CrusherPluginGcsService() {
 
 
     // we can just re-use the cache plugin service as cloud storage library has same methods.
-    return new CrusherPluginCacheService().init({
+    const p = new CrusherPluginCacheService().init({
       store: _settings.store,
       chunkSize: _settings.chunkSize,
       respectDigest: _settings.respectDigest,
-      uselz: _settings.uselz
+      uselz: _settings.uselz,
+      prefix: ''
     })
+    return {
+      ...p,
+      native: {
+        get: nativeRead,
+        put: nativeWrite,
+        remove: nativeRemove
+      }
+    }
 
   };
+
+  const nativeRead = ({ key, store }) => {
+    store = store || self.store
+    const method = 'nativeRead'
+    let blob = store.get(key);
+    if (!Utils.isBlob(blob) && blob) {
+      blob = Utilities.newBlob(blob, "text/plain")
+    }
+    const text = blob && blob.getDataAsString()
+    const mimeType = blob && blob.getContentType()
+    const bytes = blob && blob.getBytes()
+    return {
+      text,
+      bytes,
+      key,
+      mimeType,
+      code: blob ? 200 : 404,
+      method
+    }
+  }
+
+
+const nativeWrite = ({ key, store, value, expiry }) => {
+  store = store || self.store
+  return store.put(key, value, expiry)
+}
+const nativeRemove = ({ key, store }) => {
+  store = store || self.store
+  return store.remove(key)
+}
+
 
 }
