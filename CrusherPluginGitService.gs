@@ -169,7 +169,7 @@ function CrusherPluginGitService() {
     const result = _fetcher(url, {
       payload: JSON.stringify(body),
       method: 'PUT',
-      contentType: "text/plain",
+      contentType: "application/json",
       headers: {
         accept: 'application/vnd.github.v3+json'
       }
