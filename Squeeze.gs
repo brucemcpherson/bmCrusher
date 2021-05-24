@@ -25,7 +25,10 @@ var Squeeze = (function (ns) {
     // how to get an object
     var _getObject = function (store, key) {
       var result = _readFromStore(store, key);
-      return result ? JSON.parse(result) : null;
+      if (!result) return null;
+      // some plugins take care of parsing built in
+      if (typeof result === 'object') return result
+      return JSON.parse(result)
     };
 
     // how to set an object
@@ -33,7 +36,7 @@ var Squeeze = (function (ns) {
       var s = JSON.stringify(ob || {});
       // the presence of a digest means its a master record
       const flush = !!ob.digest
-     
+
       _writeToStore(store, key, s, expire, ob.propKey, flush);
       return s.length;
     };
@@ -180,6 +183,7 @@ var Squeeze = (function (ns) {
       _setObject = checkAFunc(func);
       return self;
     };
+
 
     /**
      * set how to read from store
@@ -547,7 +551,7 @@ var Squeeze = (function (ns) {
     * @return {string} the b64 zipped version
     */
     self.zip = function (crushThis, uselz) {
-      //console.log(crushThis)
+
       if (!uselz) {
         return Utilities.base64Encode(Utilities.zip([Utilities.newBlob(crushThis)]).getBytes());
       } else {
