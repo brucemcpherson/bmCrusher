@@ -265,7 +265,7 @@ var Squeeze = (function (ns) {
 
       // in case the key is an object
       propKey = _fudgeKey(propKey);
-
+  
       var data,
         crushed = _getObject(self.getStore(), propKey);
       const uselz = crushed && crushed.uselz
@@ -335,6 +335,7 @@ var Squeeze = (function (ns) {
     * @return {size} of data written - if nothing done, size is 0
     */
     self.setBigProperty = function (propKey, ob, expire) {
+
 
       // in case the key is an object
       propKey = _fudgeKey(propKey);
@@ -407,6 +408,7 @@ var Squeeze = (function (ns) {
     self.getBigProperty = function (propKey) {
 
       // in case the key is an objecs
+
       propKey = _fudgeKey(propKey);
 
       // always big properties are always crushed
@@ -472,6 +474,7 @@ var Squeeze = (function (ns) {
     *  as well as checking the digest
     * @param {object} propKey the key
     * @param {string} sob the thing to write
+    * @param {number} expire expiry in secs
     * @return {number} total length of everything written
     */
     function _setBigProperty(propKey, sob, expire) {
