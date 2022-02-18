@@ -5,7 +5,7 @@ function Fetcher ({ fetcher, tokenService }) {
   * @param {HTTPResponse} response the response from UrlFetchApp
   * @return {object} the result object
   */
-  const makeResults = (response) => {
+  this.makeResults = (response) => {
 
     const result = {
       success: false,
@@ -38,6 +38,7 @@ function Fetcher ({ fetcher, tokenService }) {
     return result;
 
   };
+
   /**
   * execute a urlfetch
   * @param {string} url the url
@@ -52,7 +53,7 @@ function Fetcher ({ fetcher, tokenService }) {
       options.headers.authorization = "Bearer " + tokenService();
     }
     const response = Utils.expBackoff(() => fetcher (url, options))
-    return makeResults(response);
+    return this.makeResults(response);
 
     
   }
