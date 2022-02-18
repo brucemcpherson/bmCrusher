@@ -22,8 +22,13 @@ function GcsStore() {
     _gcsPublicEndpoint = "https://storage.googleapis.com",
     _compress = false,
     _expiryLog = true,
+    _logging = false,
     _maxPost = MAXPOSTSIZE;
 
+  self.setLogging = function (logging) {
+    _logging = logging
+    return self
+  }
   /**
    * turn off errors about expiration metadata being missing
    */
@@ -656,6 +661,9 @@ function GcsStore() {
     options.headers.authorization = "Bearer " + _accessToken;
     options.method = options.method.toUpperCase();
 
+    if(_logging) {
+      console.log('doing', options.method, options.contentType)
+    }
 
     if (options.method === "POST") {
 
@@ -666,6 +674,8 @@ function GcsStore() {
 
         // any old separator unlikely to occur in the data will do
         var sep = cUseful.Utils.generateUniqueString(8);
+
+        if(_logging)console.log('posting multipart to', uploadUrl, sep )
 
         // generate the multipart request
         var body = "\r\n--" + sep +
@@ -690,6 +700,7 @@ function GcsStore() {
         if (metaData.name) {
           uploadUrl += ("&name=" + encodeURIComponent(metaData.name));
         }
+        if(_logging)console.log('posting non multipart to', uploadUrl )
         var rob = makeAndDo(uploadUrl, options);
 
         // if there was metadata, we still need to add that
@@ -711,6 +722,7 @@ function GcsStore() {
 
     function makeAndDo(url, options) {
       var result = doRequest(url, options);
+      if (_logging) console.log('request done')
       var rob = makeResult(result);
       return rob;
     }
