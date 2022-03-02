@@ -52,7 +52,7 @@ function Fetcher ({ fetcher, tokenService }) {
     if (tokenService) {
       options.headers.authorization = "Bearer " + tokenService();
     }
-    const response = Utils.expBackoff(() => fetcher (url, options))
+    const response = Utils.expBackoff(() => fetcher (url, options), {lookahead: (response) => response.getResponseCode() === 429})
     return this.makeResults(response);
 
     
