@@ -130,8 +130,9 @@ var Utils = (function (ns) {
   
   
   // default checker
-  function errorQualifies (errorText) {
+  function errorQualifies (err) {
     
+    console.log('checking',err)
     return ["Exception: Service invoked too many times",
             "Exception: Rate Limit Exceeded",
             "Exception: Quota Error: User Rate Limit Exceeded",
@@ -146,10 +147,11 @@ var Utils = (function (ns) {
             "Exception: ???????? ?????: DriveApp.",
             "Exception: Address unavailable",
             "Exception: Timeout",
-            "GoogleJsonResponseException: Rate Limit Exceeded" 
+            "GoogleJsonResponseException: Rate Limit Exceeded",
+            "Error: Quota exceeded"
            ]
     .some(function(e){
-      return  errorText.toString().slice(0,e.length) == e  ;
+      return  err.toString().slice(0,e.length) == e  ;
     }) ;
     
   }
