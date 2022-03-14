@@ -1,19 +1,19 @@
 {
   "timeZone": "Europe/London",
+  "exceptionLogging": "STACKDRIVER",
+  "runtimeVersion": "V8",
   "dependencies": {
     "libraries": [
       {
         "userSymbol": "bmUpstash",
         "libraryId": "1GBZYWotLe5-pVord4fe5DCl6pwGz1BiDjAqA0AE812_qy6XTWmWeZNX-",
-        "version": "6"
+        "version": "7"
       },
       {
         "userSymbol": "cGcsStore",
         "libraryId": "1w0dgijlIMA_o5p63ajzcaa_LJeUMYnrrSgfOzLKHesKZJqDCzw36qorl",
-        "version": "10"
+        "version": "13"
       }
     ]
-  },
-  "exceptionLogging": "STACKDRIVER",
-  "runtimeVersion": "V8"
+  }
 }
